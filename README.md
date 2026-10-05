@@ -76,8 +76,8 @@ The demo dataset should be precomputed so the public demo loads instantly. The l
 ## Next steps
 
 1. Add Apify + Gemini credentials.
-2. Confirm the exact LinkedIn actor/input schema chosen for the challenge.
-3. Replace development samples with 25 verified people.
+2. Run the batch ingestion and review any failed/incorrect identities.
+3. Replace failed candidates until 25 profiles succeed.
 4. Add batch generation for all pair evaluations.
 5. Add persistent precomputed demo data.
 6. Deploy to Vercel and record the 3-minute submission video.
@@ -115,3 +115,13 @@ The batch job:
 If a selected LinkedIn actor expects a different input field, set `APIFY_LINKEDIN_INPUT_KEY` to values such as `profileUrls`, `urls`, `directUrls`, or `startUrls`.
 
 A run is challenge-ready only when `people.json` contains at least 25 successful profiles and every Instagram source is public.
+
+
+### Default Apify actors
+
+The repository is preconfigured for:
+
+- LinkedIn: `cryptosignals/linkedin-profile-scraper` with `profileUrls`
+- Instagram: `apify/instagram-profile-scraper` with `usernames`
+
+Both can be overridden through environment variables without code changes.
