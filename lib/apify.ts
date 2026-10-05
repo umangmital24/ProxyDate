@@ -46,7 +46,7 @@ async function runActor(actorId: string, input: Record<string, unknown>) {
 }
 
 export async function readLinkedIn(url: string) {
-  const actor = process.env.APIFY_LINKEDIN_ACTOR || "";
+  const actor = process.env.APIFY_LINKEDIN_ACTOR || "cryptosignals/linkedin-profile-scraper";
   const key = process.env.APIFY_LINKEDIN_INPUT_KEY || "profileUrls";
   const result = await runActor(actor, buildInput(key, url));
   if (!result[0]) throw new Error("LinkedIn scraper returned no profile.");
