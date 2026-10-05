@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check:candidates": "node scripts/batch-ingest.mjs --dry-run",
+    "batch:ingest": "node --env-file=.env.local scripts/batch-ingest.mjs"
   },
   "dependencies": {
     "next": "latest",
