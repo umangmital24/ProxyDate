@@ -89,7 +89,7 @@ async function runActor(actorId, input) {
 }
 
 async function scrapeLinkedIn(url) {
-  const actor = required("APIFY_LINKEDIN_ACTOR");
+  const actor = process.env.APIFY_LINKEDIN_ACTOR || "cryptosignals/linkedin-profile-scraper";
   const key = process.env.APIFY_LINKEDIN_INPUT_KEY || "profileUrls";
   const items = await runActor(actor, buildActorInput(key, url));
   if (!Array.isArray(items) || !items[0]) throw new Error("LinkedIn scraper returned no profile.");
@@ -297,7 +297,6 @@ async function main() {
   }
 
   required("APIFY_TOKEN");
-  required("APIFY_LINKEDIN_ACTOR");
   required("GEMINI_API_KEY");
 
   const startedAt = new Date().toISOString();
