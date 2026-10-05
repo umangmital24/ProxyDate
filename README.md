@@ -81,3 +81,37 @@ The demo dataset should be precomputed so the public demo loads instantly. The l
 4. Add batch generation for all pair evaluations.
 5. Add persistent precomputed demo data.
 6. Deploy to Vercel and record the 3-minute submission video.
+
+
+## Batch ingestion
+
+The challenge roster lives at `data/candidates.json`.
+
+Validate the file without spending API credits:
+
+```bash
+npm run check:candidates
+```
+
+After creating `.env.local`, generate grounded profiles:
+
+```bash
+npm run batch:ingest
+```
+
+The batch job:
+
+- processes up to `BATCH_LIMIT` candidates (default 25)
+- runs with bounded concurrency (default 3)
+- rejects Instagram profiles reported as private
+- retries transient HTTP failures
+- isolates failures so one person cannot kill the batch
+- checkpoints after every candidate
+- writes `data/generated/people.json`
+- writes `data/generated/failures.json`
+- writes `data/generated/manifest.json`
+- optionally stores raw two-source snapshots when `SAVE_RAW_SOURCES=true`
+
+If a selected LinkedIn actor expects a different input field, set `APIFY_LINKEDIN_INPUT_KEY` to values such as `profileUrls`, `urls`, `directUrls`, or `startUrls`.
+
+A run is challenge-ready only when `people.json` contains at least 25 successful profiles and every Instagram source is public.
