@@ -121,7 +121,7 @@ A run is challenge-ready only when `people.json` contains at least 25 successful
 
 The repository is preconfigured for:
 
-- LinkedIn: `cryptosignals/linkedin-profile-scraper` with `profileUrls`
+- LinkedIn: `johnvc/linkedin-profile-api` with `profileUrls`
 - Instagram: `apify/instagram-profile-scraper` with `usernames`
 
 Both can be overridden through environment variables without code changes.

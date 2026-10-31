@@ -46,11 +46,15 @@ async function runActor(actorId: string, input: Record<string, unknown>) {
 }
 
 export async function readLinkedIn(url: string) {
-  const actor = process.env.APIFY_LINKEDIN_ACTOR || "cryptosignals/linkedin-profile-scraper";
+  const actor = process.env.APIFY_LINKEDIN_ACTOR || "johnvc/linkedin-profile-api";
   const key = process.env.APIFY_LINKEDIN_INPUT_KEY || "profileUrls";
   const result = await runActor(actor, buildInput(key, url));
-  if (!result[0]) throw new Error("LinkedIn scraper returned no profile.");
-  return result[0];
+  const profile = result.find((item) => !item.error_message);
+  if (!profile) {
+    const reason = result[0]?.error_message;
+    throw new Error("LinkedIn scraper returned no profile" + (reason ? ": " + reason : "."));
+  }
+  return profile;
 }
 
 export async function readInstagram(url: string) {

@@ -89,11 +89,15 @@ async function runActor(actorId, input) {
 }
 
 async function scrapeLinkedIn(url) {
-  const actor = process.env.APIFY_LINKEDIN_ACTOR || "cryptosignals/linkedin-profile-scraper";
+  const actor = process.env.APIFY_LINKEDIN_ACTOR || "johnvc/linkedin-profile-api";
   const key = process.env.APIFY_LINKEDIN_INPUT_KEY || "profileUrls";
   const items = await runActor(actor, buildActorInput(key, url));
-  if (!Array.isArray(items) || !items[0]) throw new Error("LinkedIn scraper returned no profile.");
-  return items[0];
+  const profile = Array.isArray(items) ? items.find((item) => !item?.error_message) : undefined;
+  if (!profile) {
+    const reason = Array.isArray(items) ? items[0]?.error_message : undefined;
+    throw new Error("LinkedIn scraper returned no profile" + (reason ? ": " + reason : "."));
+  }
+  return profile;
 }
 
 async function scrapeInstagram(url) {
